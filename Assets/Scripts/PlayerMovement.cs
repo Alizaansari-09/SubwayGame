@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private int currentLane = 1; // 0 = Left, 1 = Center, 2 = Right
     private bool isGrounded = true;
+    private bool gameOver = false;
 
     void Start()
     {
@@ -21,20 +22,19 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // Move forward continuously
+        if (gameOver)
+            return;
+
+        // Move forward
         transform.Translate(Vector3.forward * forwardSpeed * Time.deltaTime);
 
         // Move Left
         if ((Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) && currentLane > 0)
-        {
             currentLane--;
-        }
 
         // Move Right
         if ((Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) && currentLane < 2)
-        {
             currentLane++;
-        }
 
         // Jump
         if ((Input.GetKeyDown(KeyCode.UpArrow) ||
@@ -58,9 +58,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("Collided with: " + collision.gameObject.name);
+
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
         }
+
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {
+        gameOver = true;
+
+        forwardSpeed = 0f;
+        laneChangeSpeed = 0f;
+
+        rb.linearVelocity = Vector3.zero;
+
+        Debug.Log("GAME OVER!");
     }
 }

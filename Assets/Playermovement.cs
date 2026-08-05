@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 
 public class Playermovement : MonoBehaviour
@@ -14,6 +15,8 @@ public class Playermovement : MonoBehaviour
     private int currentLane = 1; // 0 = Left, 1 = Middle, 2 = Right
     private float[] lanes = { -318.68f, -322.26f, -324.66f };
     public GameObject gameOverPanel;
+    public TextMeshProUGUI coinText;
+    private int coinCount = 0;
 
     void Start()
     {
@@ -65,5 +68,15 @@ public class Playermovement : MonoBehaviour
         }
 
     }
-    
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Coin"))
+        {
+            coinCount++;
+            coinText.text = "Score: " + coinCount;
+
+            Destroy(other.gameObject);
+        }
+    }
+
 }

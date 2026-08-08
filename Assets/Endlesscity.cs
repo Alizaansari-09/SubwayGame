@@ -6,11 +6,11 @@ public class Endlesscity : MonoBehaviour
     public Transform city2;
     public Transform player;
 
-    public float cityLength = 96f;
+    public float cityLength = 192.7f;
 
     void Update()
     {
-        if (player.position.z < city2.position.z - cityLength)
+        if (player.position.z > city1.position.z + cityLength)
         {
             city1.position = new Vector3(
                 city1.position.x,
@@ -19,7 +19,7 @@ public class Endlesscity : MonoBehaviour
             );
         }
 
-        if (player.position.z < city1.position.z - cityLength)
+        if (player.position.z > city2.position.z + cityLength)
         {
             city2.position = new Vector3(
                 city2.position.x,
